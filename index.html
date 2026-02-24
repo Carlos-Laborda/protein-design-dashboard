@@ -1,0 +1,510 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Censored Public Demo - Unified Campaign</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', -apple-system, sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 min-h-screen p-8 text-slate-200">
+    
+    <div class="max-w-[1600px] mx-auto space-y-8">
+        
+        <div class="border-b border-slate-700 pb-6 flex justify-between items-end">
+            <div>
+                <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">Censored Public Demo</h1>
+                <p class="text-lg text-indigo-300">Anonymized Data: BindCraft + BoltzGen Large + BoltzGen VHH + Boltzgen Miniprotein</p>
+            </div>
+            <div class="text-right flex items-center gap-6">
+                <div class="px-4 py-2 bg-slate-800 rounded border border-slate-700">
+                    <span class="text-xs text-slate-400 block">Total Designs</span>
+                    <span class="text-xl font-bold text-white" id="totalCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4 text-sm text-slate-400 leading-relaxed">
+            <p><strong class="text-white">Validation Tiers:</strong></p>
+            <ul class="list-disc list-inside mt-1 space-y-1 ml-2">
+                <li><strong class="text-[#10b981]">Platinum:</strong> Strict Consensus (High Confidence). Both AF3 & Boltz agree with iPTM &ge; 0.85 & iPSAE &ge; 0.75.</li>
+                <li><strong class="text-[#3b82f6]">Gold:</strong> Strong Consensus. Both models agree with iPTM &ge; 0.80 & iPSAE &ge; 0.70.</li>
+                <li><strong class="text-[#a855f7]">Silver:</strong> Moderate Consensus. Both models agree with iPTM &ge; 0.75 & iPSAE &ge; 0.60.</li>
+                <li><strong class="text-[#f59e0b]">Bronze:</strong> Single Model Rescue. One model shows high confidence even if the other disagrees.</li>
+                <li><strong class="text-[#ef4444]">Fail:</strong> Poor confidence in both models.</li>
+            </ul>
+        </div>
+
+        <div class="bg-slate-800/60 backdrop-blur border border-slate-700 rounded-lg p-4 flex flex-wrap gap-6 items-center shadow-lg">
+            <div class="flex items-center gap-2 mr-4 border-r border-slate-700 pr-6">
+                <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                <span class="text-sm font-bold text-white uppercase tracking-wide">Filters</span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <span class="text-xs text-slate-500 uppercase font-bold">Show Tiers:</span>
+                <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" checked class="accent-emerald-500 w-4 h-4 tier-toggle rounded" value="Platinum">
+                    <span class="text-sm text-slate-300 group-hover:text-emerald-400 transition-colors">Platinum</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" checked class="accent-blue-500 w-4 h-4 tier-toggle rounded" value="Gold">
+                    <span class="text-sm text-slate-300 group-hover:text-blue-400 transition-colors">Gold</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" checked class="accent-purple-500 w-4 h-4 tier-toggle rounded" value="Silver">
+                    <span class="text-sm text-slate-300 group-hover:text-purple-400 transition-colors">Silver</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" checked class="accent-orange-500 w-4 h-4 tier-toggle rounded" value="Bronze">
+                    <span class="text-sm text-slate-300 group-hover:text-orange-400 transition-colors">Bronze</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" class="accent-red-500 w-4 h-4 tier-toggle rounded" value="Fail">
+                    <span class="text-sm text-slate-300 group-hover:text-red-400 transition-colors">Fail</span>
+                </label>
+            </div>
+
+            <div class="h-8 w-px bg-slate-700 mx-2"></div>
+
+            <div class="flex items-center gap-4">
+                 <span class="text-xs text-slate-500 uppercase font-bold">Source:</span>
+                 <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" checked class="accent-teal-500 w-4 h-4 source-toggle rounded" value="BindCraft">
+                    <span class="text-sm text-slate-300 group-hover:text-teal-400 transition-colors">BindCraft</span>
+                 </label>
+                 <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" checked class="accent-amber-500 w-4 h-4 source-toggle rounded" value="BoltzGen_Large">
+                    <span class="text-sm text-slate-300 group-hover:text-amber-400 transition-colors">BoltzGen Large</span>
+                 </label>
+                 <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" checked class="accent-sky-500 w-4 h-4 source-toggle rounded" value="BoltzGen_VHH">
+                    <span class="text-sm text-slate-300 group-hover:text-sky-400 transition-colors">VHH</span>
+                 </label>
+                 <label class="flex items-center gap-2 cursor-pointer group select-none">
+                    <input type="checkbox" checked class="accent-rose-500 w-4 h-4 source-toggle rounded" value="BoltzGen_Miniprotein">
+                    <span class="text-sm text-slate-300 group-hover:text-rose-400 transition-colors">Miniprotein</span>
+                 </label>
+            </div>
+        </div>
+
+        <!-- LEGEND -->
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg px-4 py-3 flex items-center gap-6 text-xs text-slate-400">
+            <span class="font-bold text-slate-300 uppercase tracking-wide">Plot Markers:</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full bg-slate-400 border-2 border-white"></span> BindCraft (circle)</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 bg-slate-400 border-2 border-white" style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></span> BoltzGen Large (triangle)</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 bg-slate-400 border-2 border-white"></span> BoltzGen VHH (square)</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 bg-slate-400 border-2 border-white" style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span> Miniprotein (diamond)</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-slate-800/60 backdrop-blur rounded-xl border border-slate-700 p-6 shadow-lg flex flex-col h-[500px]">
+                <h3 class="text-center text-slate-300 font-bold mb-4 text-sm uppercase tracking-wide">AF3 vs Boltz2 iPSAE</h3>
+                <div class="relative flex-1 w-full h-full">
+                    <canvas id="canvas_ipsae" class="w-full h-full bg-slate-900/50 rounded cursor-crosshair"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/60 backdrop-blur rounded-xl border border-slate-700 p-6 shadow-lg flex flex-col h-[500px]">
+                <h3 class="text-center text-slate-300 font-bold mb-4 text-sm uppercase tracking-wide">AF3 vs Boltz2 iPTM</h3>
+                <div class="relative flex-1 w-full h-full">
+                    <canvas id="canvas_iptm" class="w-full h-full bg-slate-900/50 rounded cursor-crosshair"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-slate-800/60 backdrop-blur rounded-xl border border-slate-700 p-6 shadow-lg flex flex-col h-[500px]">
+                <h3 class="text-center text-slate-300 font-bold mb-4 text-sm uppercase tracking-wide">Boltz2: iPTM vs iPSAE</h3>
+                <div class="relative flex-1 w-full h-full">
+                    <canvas id="canvas_boltz_check" class="w-full h-full bg-slate-900/50 rounded cursor-crosshair"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/60 backdrop-blur rounded-xl border border-slate-700 p-6 shadow-lg flex flex-col h-[500px]">
+                <h3 class="text-center text-slate-300 font-bold mb-4 text-sm uppercase tracking-wide">AF3: iPTM vs iPSAE</h3>
+                <div class="relative flex-1 w-full h-full">
+                    <canvas id="canvas_af3_check" class="w-full h-full bg-slate-900/50 rounded cursor-crosshair"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 h-[800px] pb-12">
+            
+            <div class="col-span-12 lg:col-span-8 bg-slate-800/60 backdrop-blur rounded-xl border border-slate-700 shadow-xl overflow-hidden flex flex-col h-full">
+                <div class="p-4 bg-slate-800 border-b border-slate-700 flex justify-between items-center">
+                    <h3 class="font-bold text-white flex items-center gap-2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+                        Ranking Table
+                    </h3>
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="Search..." id="tableSearch" class="bg-slate-900 border border-slate-600 rounded px-3 py-1 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 w-48">
+                        <select id="sortSelect" class="bg-slate-900 border border-slate-600 rounded px-2 py-1 text-sm text-slate-300 focus:outline-none focus:border-indigo-500">
+                            <option value="default">Default Sort</option>
+                            <option value="af3_ipsae">AF3 iPSAE</option>
+                            <option value="boltz_ipsae">Boltz iPSAE</option>
+                            <option value="af3_iptm">AF3 iPTM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex-1 overflow-auto">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead class="text-xs text-slate-400 uppercase bg-slate-900 sticky top-0 z-10 shadow-sm">
+                            <tr>
+                                <th class="px-6 py-3 font-semibold border-b border-slate-700">Status</th>
+                                <th class="px-4 py-3 font-semibold border-b border-slate-700">Source</th>
+                                <th class="px-6 py-3 font-semibold border-b border-slate-700">Design</th>
+                                <th class="px-4 py-3 font-semibold border-b border-slate-700 text-right">AF3 iPSAE</th>
+                                <th class="px-4 py-3 font-semibold border-b border-slate-700 text-right">Boltz iPSAE</th>
+                                <th class="px-4 py-3 font-semibold border-b border-slate-700 text-right">AF3 iPTM</th>
+                                <th class="px-4 py-3 font-semibold border-b border-slate-700 text-right">Boltz iPTM</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-700/50"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-4 bg-indigo-950/30 backdrop-blur rounded-xl border border-indigo-500/20 p-6 shadow-inner h-full flex flex-col">
+                <h3 class="text-sm font-bold text-indigo-300 uppercase tracking-wide mb-4 border-b border-indigo-500/30 pb-2">Candidate Details</h3>
+                
+                <div id="detailsPlaceholder" class="flex-1 flex flex-col items-center justify-center opacity-50">
+                    <svg class="w-16 h-16 mb-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    <p class="text-indigo-200">Select a design</p>
+                </div>
+
+                <div id="detailsContent" class="hidden flex-col h-full">
+                    <div class="mb-6">
+                        <div class="flex gap-2 mb-2">
+                             <span id="detailStatusBadge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border"></span>
+                             <span id="detailSourceBadge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-600 text-slate-300 bg-slate-800"></span>
+                        </div>
+                        <h2 id="detailTitle" class="text-xl font-bold text-white break-all mt-2 leading-tight"></h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-700">
+                            <p class="text-[10px] text-slate-400 uppercase">AF3 iPSAE</p>
+                            <p id="val_af3_ipsae" class="text-lg font-mono font-bold text-blue-300"></p>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-700">
+                            <p class="text-[10px] text-slate-400 uppercase">Boltz iPSAE</p>
+                            <p id="val_boltz_ipsae" class="text-lg font-mono font-bold text-purple-300"></p>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-700">
+                            <p class="text-[10px] text-slate-400 uppercase">AF3 iPTM</p>
+                            <p id="val_af3_iptm" class="text-lg font-mono font-bold text-white"></p>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-700">
+                            <p class="text-[10px] text-slate-400 uppercase">Boltz iPTM</p>
+                            <p id="val_boltz_iptm" class="text-lg font-mono font-bold text-white"></p>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 flex flex-col min-h-0">
+                        <p class="text-xs text-slate-500 uppercase mb-2">Sequence</p>
+                        <div id="detailSequence" class="bg-slate-950 p-3 rounded border border-slate-800 font-mono text-xs text-slate-500 break-all overflow-y-auto leading-relaxed flex-1 select-none italic"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const RAW_DATA = [{"Design": "Target_l83_s307203_mpnn5", "Status": "1_Platinum", "Source": "BindCraft", "AF3_iPSAE": 0.881699, "Boltz_iPSAE": 0.8712, "AF3_iPTM": 0.92, "Boltz_iPTM": 0.9310445189476012, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_17_07755", "Status": "1_Platinum", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.864546, "Boltz_iPSAE": 0.870706, "AF3_iPTM": 0.93, "Boltz_iPTM": 0.9341980814933776, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l83_s307203_mpnn8", "Status": "1_Platinum", "Source": "BindCraft", "AF3_iPSAE": 0.863007, "Boltz_iPSAE": 0.854744, "AF3_iPTM": 0.92, "Boltz_iPTM": 0.9224457144737244, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l74_s274022_mpnn1", "Status": "1_Platinum", "Source": "BindCraft", "AF3_iPSAE": 0.859016, "Boltz_iPSAE": 0.842975, "AF3_iPTM": 0.91, "Boltz_iPTM": 0.9042231440544128, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_01_10919", "Status": "1_Platinum", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.857894, "Boltz_iPSAE": 0.849459, "AF3_iPTM": 0.92, "Boltz_iPTM": 0.9231117963790894, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_16_02820", "Status": "1_Platinum", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.842155, "Boltz_iPSAE": 0.874061, "AF3_iPTM": 0.9, "Boltz_iPTM": 0.9283239841461182, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_02_11131", "Status": "1_Platinum", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.828787, "Boltz_iPSAE": 0.778198, "AF3_iPTM": 0.91, "Boltz_iPTM": 0.8910667896270752, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_01_01500", "Status": "1_Platinum", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.827322, "Boltz_iPSAE": 0.886851, "AF3_iPTM": 0.9, "Boltz_iPTM": 0.9292969703674316, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l89_s710769_mpnn8", "Status": "1_Platinum", "Source": "BindCraft", "AF3_iPSAE": 0.825052, "Boltz_iPSAE": 0.890637, "AF3_iPTM": 0.9, "Boltz_iPTM": 0.9387403130531312, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l67_s88450_mpnn10", "Status": "1_Platinum", "Source": "BindCraft", "AF3_iPSAE": 0.824341, "Boltz_iPSAE": 0.884573, "AF3_iPTM": 0.86, "Boltz_iPTM": 0.907442569732666, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_18_17796", "Status": "1_Platinum", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.805499, "Boltz_iPSAE": 0.867418, "AF3_iPTM": 0.9, "Boltz_iPTM": 0.9303892254829408, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_06_07908", "Status": "1_Platinum", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.795341, "Boltz_iPSAE": 0.82866, "AF3_iPTM": 0.9, "Boltz_iPTM": 0.907201051712036, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_10_09355", "Status": "1_Platinum", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.793797, "Boltz_iPSAE": 0.757163, "AF3_iPTM": 0.88, "Boltz_iPTM": 0.8917204141616821, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l74_s274022_mpnn3", "Status": "1_Platinum", "Source": "BindCraft", "AF3_iPSAE": 0.783063, "Boltz_iPSAE": 0.854081, "AF3_iPTM": 0.87, "Boltz_iPTM": 0.9108811616897584, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_12_11317", "Status": "1_Platinum", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.764393, "Boltz_iPSAE": 0.84685, "AF3_iPTM": 0.87, "Boltz_iPTM": 0.914963722229004, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_20_02433", "Status": "1_Platinum", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.764175, "Boltz_iPSAE": 0.756951, "AF3_iPTM": 0.88, "Boltz_iPTM": 0.8823426961898804, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_11_03903", "Status": "1_Platinum", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.752303, "Boltz_iPSAE": 0.81493, "AF3_iPTM": 0.87, "Boltz_iPTM": 0.9145749807357788, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l96_s796992_mpnn1", "Status": "1_Platinum", "Source": "BindCraft", "AF3_iPSAE": 0.751574, "Boltz_iPSAE": 0.832626, "AF3_iPTM": 0.87, "Boltz_iPTM": 0.9074345231056212, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l99_s596815_mpnn2", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.855262, "Boltz_iPSAE": 0.732194, "AF3_iPTM": 0.89, "Boltz_iPTM": 0.8305885195732117, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l84_s544144_mpnn1", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.843438, "Boltz_iPSAE": 0.715959, "AF3_iPTM": 0.88, "Boltz_iPTM": 0.8531162738800049, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l92_s688101_mpnn3", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.801729, "Boltz_iPSAE": 0.739156, "AF3_iPTM": 0.86, "Boltz_iPTM": 0.837179958820343, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_16_03016", "Status": "2_Gold", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.797181, "Boltz_iPSAE": 0.717551, "AF3_iPTM": 0.89, "Boltz_iPTM": 0.859964907169342, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l86_s277696_mpnn2", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.792446, "Boltz_iPSAE": 0.883458, "AF3_iPTM": 0.84, "Boltz_iPTM": 0.909398913383484, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l67_s88450_mpnn6", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.789524, "Boltz_iPSAE": 0.8376, "AF3_iPTM": 0.84, "Boltz_iPTM": 0.8777075409889221, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l86_s507056_mpnn5", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.767793, "Boltz_iPSAE": 0.755854, "AF3_iPTM": 0.84, "Boltz_iPTM": 0.8597321510314941, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l87_s109519_mpnn2", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.752158, "Boltz_iPSAE": 0.710099, "AF3_iPTM": 0.82, "Boltz_iPTM": 0.8254215121269226, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_09_02290", "Status": "2_Gold", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.733053, "Boltz_iPSAE": 0.810674, "AF3_iPTM": 0.85, "Boltz_iPTM": 0.8958906531333923, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l87_s109519_mpnn1", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.727977, "Boltz_iPSAE": 0.868293, "AF3_iPTM": 0.8, "Boltz_iPTM": 0.9019359946250916, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_12_00701", "Status": "2_Gold", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.724578, "Boltz_iPSAE": 0.803139, "AF3_iPTM": 0.86, "Boltz_iPTM": 0.9048540592193604, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l63_s455201_mpnn1", "Status": "2_Gold", "Source": "BindCraft", "AF3_iPSAE": 0.708123, "Boltz_iPSAE": 0.861697, "AF3_iPTM": 0.8, "Boltz_iPTM": 0.8909034132957458, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_08_09523", "Status": "2_Gold", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.706149, "Boltz_iPSAE": 0.877659, "AF3_iPTM": 0.84, "Boltz_iPTM": 0.921151638031006, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_02_05402", "Status": "3_Silver", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.768128, "Boltz_iPSAE": 0.627476, "AF3_iPTM": 0.87, "Boltz_iPTM": 0.8358774185180664, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_08_08774", "Status": "3_Silver", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.740889, "Boltz_iPSAE": 0.613251, "AF3_iPTM": 0.86, "Boltz_iPTM": 0.8375933170318604, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_15_12246", "Status": "3_Silver", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.735537, "Boltz_iPSAE": 0.679, "AF3_iPTM": 0.88, "Boltz_iPTM": 0.8585249185562134, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_17_07697", "Status": "3_Silver", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.724535, "Boltz_iPSAE": 0.682127, "AF3_iPTM": 0.84, "Boltz_iPTM": 0.825141966342926, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_15_12281", "Status": "3_Silver", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.696478, "Boltz_iPSAE": 0.750324, "AF3_iPTM": 0.83, "Boltz_iPTM": 0.8632866740226746, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_14_06703", "Status": "3_Silver", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.692149, "Boltz_iPSAE": 0.812297, "AF3_iPTM": 0.82, "Boltz_iPTM": 0.899429976940155, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l86_s277696_mpnn1", "Status": "3_Silver", "Source": "BindCraft", "AF3_iPSAE": 0.684339, "Boltz_iPSAE": 0.887695, "AF3_iPTM": 0.78, "Boltz_iPTM": 0.91237473487854, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l77_s41162_mpnn9", "Status": "3_Silver", "Source": "BindCraft", "AF3_iPSAE": 0.67336, "Boltz_iPSAE": 0.845406, "AF3_iPTM": 0.83, "Boltz_iPTM": 0.9108489751815796, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l86_s254377_mpnn6", "Status": "3_Silver", "Source": "BindCraft", "AF3_iPSAE": 0.663008, "Boltz_iPSAE": 0.837504, "AF3_iPTM": 0.81, "Boltz_iPTM": 0.9016015529632568, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l96_s796992_mpnn2", "Status": "3_Silver", "Source": "BindCraft", "AF3_iPSAE": 0.662445, "Boltz_iPSAE": 0.82899, "AF3_iPTM": 0.82, "Boltz_iPTM": 0.9070637226104736, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_06_18244", "Status": "3_Silver", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.646216, "Boltz_iPSAE": 0.784462, "AF3_iPTM": 0.83, "Boltz_iPTM": 0.8994457125663757, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l63_s455201_mpnn2", "Status": "3_Silver", "Source": "BindCraft", "AF3_iPSAE": 0.628466, "Boltz_iPSAE": 0.874091, "AF3_iPTM": 0.77, "Boltz_iPTM": 0.8961902856826782, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l88_s334218_mpnn1", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.883744, "Boltz_iPSAE": 0.474219, "AF3_iPTM": 0.91, "Boltz_iPTM": 0.7351933717727661, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l88_s334218_mpnn2", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.876621, "Boltz_iPSAE": 0.038537, "AF3_iPTM": 0.91, "Boltz_iPTM": 0.514411985874176, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l99_s596815_mpnn3", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.843091, "Boltz_iPSAE": 0.527263, "AF3_iPTM": 0.88, "Boltz_iPTM": 0.7300534844398499, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_03_00921", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.82158, "Boltz_iPSAE": 0.431226, "AF3_iPTM": 0.91, "Boltz_iPTM": 0.7659186720848083, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l92_s688101_mpnn4", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.813946, "Boltz_iPSAE": 0.560742, "AF3_iPTM": 0.86, "Boltz_iPTM": 0.7660261988639832, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_07_00744", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.812628, "Boltz_iPSAE": 0.521859, "AF3_iPTM": 0.88, "Boltz_iPTM": 0.8057718873023987, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_07_09655", "Status": "4_Bronze", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.811099, "Boltz_iPSAE": 0.278798, "AF3_iPTM": 0.88, "Boltz_iPTM": 0.6578620076179504, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l84_s544144_mpnn2", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.77436, "Boltz_iPSAE": 0.012697, "AF3_iPTM": 0.84, "Boltz_iPTM": 0.4127689599990845, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l95_s442681_mpnn4", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.768059, "Boltz_iPSAE": 0.503407, "AF3_iPTM": 0.87, "Boltz_iPTM": 0.7731260061264038, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_19_09858", "Status": "4_Bronze", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.718399, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.84, "Boltz_iPTM": 0.4044118523597717, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l85_s163378_mpnn1", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.696766, "Boltz_iPSAE": 0.580259, "AF3_iPTM": 0.83, "Boltz_iPTM": 0.7987216114997864, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l85_s163378_mpnn2", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.69147, "Boltz_iPSAE": 0.212434, "AF3_iPTM": 0.82, "Boltz_iPTM": 0.5931840538978577, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l95_s442681_mpnn5", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.68985, "Boltz_iPSAE": 0.011204, "AF3_iPTM": 0.86, "Boltz_iPTM": 0.2840840220451355, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_13_10855", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.666538, "Boltz_iPSAE": 0.012787, "AF3_iPTM": 0.82, "Boltz_iPTM": 0.3283088505268097, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l88_s589037_mpnn6", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.646795, "Boltz_iPSAE": 0.473289, "AF3_iPTM": 0.81, "Boltz_iPTM": 0.7605883479118347, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_13_01455", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.627083, "Boltz_iPSAE": 0.416116, "AF3_iPTM": 0.85, "Boltz_iPTM": 0.7650384306907654, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_16_00436", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.600147, "Boltz_iPSAE": 0.418202, "AF3_iPTM": 0.81, "Boltz_iPTM": 0.7686671614646912, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l93_s680110_mpnn2", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.595872, "Boltz_iPSAE": 0.764576, "AF3_iPTM": 0.81, "Boltz_iPTM": 0.8642021417617798, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_10_02627", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.595092, "Boltz_iPSAE": 0.572707, "AF3_iPTM": 0.77, "Boltz_iPTM": 0.8054234385490417, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_09_14817", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.580279, "Boltz_iPSAE": 0.85333, "AF3_iPTM": 0.8, "Boltz_iPTM": 0.9060295820236206, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_17_02894", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.572697, "Boltz_iPSAE": 0.295332, "AF3_iPTM": 0.76, "Boltz_iPTM": 0.6415825486183167, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_20_03406", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.52245, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.79, "Boltz_iPTM": 0.2272742539644241, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_12_10499", "Status": "4_Bronze", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.51871, "Boltz_iPSAE": 0.234506, "AF3_iPTM": 0.78, "Boltz_iPTM": 0.6190227270126343, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_18_18828", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.516597, "Boltz_iPSAE": 0.011614, "AF3_iPTM": 0.77, "Boltz_iPTM": 0.4299082458019256, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_10_13875", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.509184, "Boltz_iPSAE": 0.011162, "AF3_iPTM": 0.75, "Boltz_iPTM": 0.4688625335693359, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l87_s733084_mpnn3", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.503099, "Boltz_iPSAE": 0.011731, "AF3_iPTM": 0.73, "Boltz_iPTM": 0.2955338060855865, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l87_s733084_mpnn4", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.48176, "Boltz_iPSAE": 0.741249, "AF3_iPTM": 0.71, "Boltz_iPTM": 0.8349441885948181, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_20_03623", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.462451, "Boltz_iPSAE": 0.559293, "AF3_iPTM": 0.71, "Boltz_iPTM": 0.7761055827140808, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_10_11879", "Status": "4_Bronze", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.445681, "Boltz_iPSAE": 0.50942, "AF3_iPTM": 0.7, "Boltz_iPTM": 0.7875279188156128, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l77_s41162_mpnn4", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.33722, "Boltz_iPSAE": 0.779887, "AF3_iPTM": 0.69, "Boltz_iPTM": 0.8715388178825378, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_06_12139", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.302972, "Boltz_iPSAE": 0.687999, "AF3_iPTM": 0.7, "Boltz_iPTM": 0.8498865365982056, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_11_01384", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.186778, "Boltz_iPSAE": 0.674645, "AF3_iPTM": 0.62, "Boltz_iPTM": 0.8539426326751709, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_14_10796", "Status": "4_Bronze", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.156401, "Boltz_iPSAE": 0.569511, "AF3_iPTM": 0.63, "Boltz_iPTM": 0.8216010928153992, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_16_11798", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.087232, "Boltz_iPSAE": 0.613226, "AF3_iPTM": 0.5, "Boltz_iPTM": 0.8051692247390747, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_14_07151", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.066711, "Boltz_iPSAE": 0.553542, "AF3_iPTM": 0.5, "Boltz_iPTM": 0.7859031558036804, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l73_s700602_mpnn3", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.051441, "Boltz_iPSAE": 0.698285, "AF3_iPTM": 0.46, "Boltz_iPTM": 0.8382940292358398, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_13_02981", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.015472, "Boltz_iPSAE": 0.805477, "AF3_iPTM": 0.38, "Boltz_iPTM": 0.878727376461029, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_19_10714", "Status": "4_Bronze", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.013361, "Boltz_iPSAE": 0.748709, "AF3_iPTM": 0.4, "Boltz_iPTM": 0.8579155802726746, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_07_15695", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.012195, "Boltz_iPSAE": 0.536628, "AF3_iPTM": 0.45, "Boltz_iPTM": 0.7884588241577148, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_04_01446", "Status": "4_Bronze", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.011829, "Boltz_iPSAE": 0.815397, "AF3_iPTM": 0.28, "Boltz_iPTM": 0.8941999077796936, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_05_04268", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.011218, "Boltz_iPSAE": 0.767601, "AF3_iPTM": 0.43, "Boltz_iPTM": 0.8590214848518372, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_13_10883", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.010847, "Boltz_iPSAE": 0.735013, "AF3_iPTM": 0.36, "Boltz_iPTM": 0.8441265821456909, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l93_s680110_mpnn4", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.010734, "Boltz_iPSAE": 0.652345, "AF3_iPTM": 0.38, "Boltz_iPTM": 0.8324591517448425, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_11_16305", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.010734, "Boltz_iPSAE": 0.519723, "AF3_iPTM": 0.43, "Boltz_iPTM": 0.785699188709259, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_02_00514", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.87938, "AF3_iPTM": 0.41, "Boltz_iPTM": 0.9221141934394836, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_17_11729", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.845498, "AF3_iPTM": 0.19, "Boltz_iPTM": 0.8977423906326294, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_04_02894", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.82101, "AF3_iPTM": 0.2, "Boltz_iPTM": 0.8927946090698242, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_19_00943", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.817563, "AF3_iPTM": 0.18, "Boltz_iPTM": 0.9039647579193116, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_04_07857", "Status": "4_Bronze", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.812398, "AF3_iPTM": 0.18, "Boltz_iPTM": 0.903603494167328, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_20_18729", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.766212, "AF3_iPTM": 0.18, "Boltz_iPTM": 0.8697392344474792, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_14_11189", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.762984, "AF3_iPTM": 0.39, "Boltz_iPTM": 0.8841114044189453, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_10_11251", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.719823, "AF3_iPTM": 0.16, "Boltz_iPTM": 0.8583942651748657, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l71_s361905_mpnn3", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.700407, "AF3_iPTM": 0.11, "Boltz_iPTM": 0.8275546431541443, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_03_18728", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.687187, "AF3_iPTM": 0.29, "Boltz_iPTM": 0.8390358090400696, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_11_01635", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.682264, "AF3_iPTM": 0.2, "Boltz_iPTM": 0.8427103757858276, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_06_02174", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.633194, "AF3_iPTM": 0.18, "Boltz_iPTM": 0.8102694749832153, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l64_s811442_mpnn4", "Status": "4_Bronze", "Source": "BindCraft", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.622844, "AF3_iPTM": 0.31, "Boltz_iPTM": 0.8284276127815247, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_07_07390", "Status": "4_Bronze", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.58835, "AF3_iPTM": 0.21, "Boltz_iPTM": 0.8175734877586365, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_01_13401", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.555596, "AF3_iPTM": 0.22, "Boltz_iPTM": 0.7907741069793701, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_19_21648", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.51587, "AF3_iPTM": 0.21, "Boltz_iPTM": 0.7859190106391907, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_12_16927", "Status": "4_Bronze", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.506014, "AF3_iPTM": 0.3, "Boltz_iPTM": 0.7830015420913696, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l90_s278596_mpnn2", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.451691, "Boltz_iPSAE": 0.479567, "AF3_iPTM": 0.7, "Boltz_iPTM": 0.6944749355316162, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_08_06026", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.394964, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.7, "Boltz_iPTM": 0.1510219275951385, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_14_06259", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.308012, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.63, "Boltz_iPTM": 0.3968777656555176, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_15_12770", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.293549, "Boltz_iPSAE": 0.190219, "AF3_iPTM": 0.63, "Boltz_iPTM": 0.6127994060516357, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_16_04967", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.266154, "Boltz_iPSAE": 0.012259, "AF3_iPTM": 0.6, "Boltz_iPTM": 0.4146745204925537, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l96_s485357_mpnn5", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.249784, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.59, "Boltz_iPTM": 0.1653278470039367, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l77_s86039_mpnn1", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.222727, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.57, "Boltz_iPTM": 0.3362080752849579, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l64_s811442_mpnn2", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.194037, "Boltz_iPSAE": 0.481134, "AF3_iPTM": 0.65, "Boltz_iPTM": 0.7617666721343994, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l85_s684703_mpnn9", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.139146, "Boltz_iPSAE": 0.466202, "AF3_iPTM": 0.47, "Boltz_iPTM": 0.734212338924408, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l88_s647458_mpnn9", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.117344, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.52, "Boltz_iPTM": 0.2737451791763305, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l90_s278596_mpnn1", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.115011, "Boltz_iPSAE": 0.374962, "AF3_iPTM": 0.48, "Boltz_iPTM": 0.6366009712219238, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_06_03716", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.085904, "Boltz_iPSAE": 0.344225, "AF3_iPTM": 0.49, "Boltz_iPTM": 0.7089366912841797, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_03_09981", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.076366, "Boltz_iPSAE": 0.066324, "AF3_iPTM": 0.48, "Boltz_iPTM": 0.5687987804412842, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_12_04854", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.063298, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.49, "Boltz_iPTM": 0.1769014745950698, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l76_s728621_mpnn2", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.028073, "Boltz_iPSAE": 0.46389, "AF3_iPTM": 0.43, "Boltz_iPTM": 0.7565707564353943, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_18_08433", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.024724, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.36, "Boltz_iPTM": 0.3281506597995758, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_19_06112", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.019853, "Boltz_iPSAE": 0.48219, "AF3_iPTM": 0.34, "Boltz_iPTM": 0.7816733717918396, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_08_12061", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.013362, "Boltz_iPSAE": 0.059333, "AF3_iPTM": 0.38, "Boltz_iPTM": 0.4691906869411468, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l88_s589037_mpnn10", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.012636, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.24, "Boltz_iPTM": 0.3249130845069885, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_13_05333", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.012521, "Boltz_iPSAE": 0.011425, "AF3_iPTM": 0.32, "Boltz_iPTM": 0.4906906485557556, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_17_08670", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.012453, "Boltz_iPSAE": 0.441998, "AF3_iPTM": 0.38, "Boltz_iPTM": 0.7559487223625183, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_11_02693", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.011949, "Boltz_iPSAE": 0.383497, "AF3_iPTM": 0.19, "Boltz_iPTM": 0.6583544015884399, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_09_08583", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.011932, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.27, "Boltz_iPTM": 0.4278360605239868, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l80_s531657_mpnn5", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.011632, "Boltz_iPSAE": 0.010799, "AF3_iPTM": 0.37, "Boltz_iPTM": 0.2444120645523071, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_04_09867", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.011396, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.47, "Boltz_iPTM": 0.1870389431715011, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_13_09808", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.475222, "AF3_iPTM": 0.12, "Boltz_iPTM": 0.7592211365699768, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_12_04611", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.41041, "AF3_iPTM": 0.19, "Boltz_iPTM": 0.7188190221786499, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_02_23592", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.39652, "AF3_iPTM": 0.13, "Boltz_iPTM": 0.7322711944580078, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_16_21975", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.393534, "AF3_iPTM": 0.2, "Boltz_iPTM": 0.7083196640014648, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_05_01052", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.333029, "AF3_iPTM": 0.22, "Boltz_iPTM": 0.7117069959640503, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_04_05700", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.29011, "AF3_iPTM": 0.19, "Boltz_iPTM": 0.6858763098716736, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_09_05230", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.212817, "AF3_iPTM": 0.16, "Boltz_iPTM": 0.6236729621887207, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_02_23596", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.177036, "AF3_iPTM": 0.18, "Boltz_iPTM": 0.5695793032646179, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_03_10543", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.13426, "AF3_iPTM": 0.18, "Boltz_iPTM": 0.5533620715141296, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_18_08713", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.1317, "AF3_iPTM": 0.14, "Boltz_iPTM": 0.5542808175086975, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l76_s728621_mpnn10", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.131168, "AF3_iPTM": 0.27, "Boltz_iPTM": 0.5516666173934937, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_18_10016", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.075483, "AF3_iPTM": 0.29, "Boltz_iPTM": 0.5207118988037109, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l96_s485357_mpnn3", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.058569, "AF3_iPTM": 0.24, "Boltz_iPTM": 0.5081247687339783, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l73_s404254_mpnn1", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.053986, "AF3_iPTM": 0.23, "Boltz_iPTM": 0.4812420904636383, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_08_20062", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0444, "AF3_iPTM": 0.14, "Boltz_iPTM": 0.5674160718917847, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "Target_l73_s404254_mpnn6", "Status": "5_Fail", "Source": "BindCraft", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.012155, "AF3_iPTM": 0.24, "Boltz_iPTM": 0.3082543015480041, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_04_10362", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.011838, "AF3_iPTM": 0.18, "Boltz_iPTM": 0.3356800377368927, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_15_01559", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.011526, "AF3_iPTM": 0.24, "Boltz_iPTM": 0.4148934483528137, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_07_06808", "Status": "5_Fail", "Source": "BoltzGen_VHH", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.011445, "AF3_iPTM": 0.24, "Boltz_iPTM": 0.3301042914390564, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_10_02199", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.010956, "AF3_iPTM": 0.38, "Boltz_iPTM": 0.4474108815193176, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_07_07770", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.010578, "AF3_iPTM": 0.16, "Boltz_iPTM": 0.4555634260177612, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_15_08395", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.27, "Boltz_iPTM": 0.2144925445318222, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_06_10754", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.22, "Boltz_iPTM": 0.3358320891857147, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_15_07816", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.22, "Boltz_iPTM": 0.1235395669937133, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_05_10765", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.21, "Boltz_iPTM": 0.1570232063531875, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_20_22377", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.2, "Boltz_iPTM": 0.2151087671518325, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_01_07938", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.2, "Boltz_iPTM": 0.1625127792358398, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_14_14146", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.15, "Boltz_iPTM": 0.2715539038181305, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "IF_11_06576", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.12, "Boltz_iPTM": 0.1444519609212875, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_17_04386", "Status": "5_Fail", "Source": "BoltzGen_Large", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.11, "Boltz_iPTM": 0.1396150141954422, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_03_06584", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.42, "Boltz_iPTM": 0.3544076085090637, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}, {"Design": "BG_08_10405", "Status": "5_Fail", "Source": "BoltzGen_Miniprotein", "AF3_iPSAE": 0.0, "Boltz_iPSAE": 0.0, "AF3_iPTM": 0.27, "Boltz_iPTM": 0.3353020846843719, "sequence_clean": "\ud83d\udd12 SEQUENCE DATA REDACTED FOR PUBLIC DEMO \ud83d\udd12"}];
+    </script>
+
+    <script>
+        let data = [];
+        let selectedIndex = null;
+        let hoveredIndex = null;
+        
+        const plots = [
+            { id: 'canvas_ipsae', xKey: 'AF3_iPSAE', yKey: 'Boltz_iPSAE', xLabel: 'AF3 iPSAE', yLabel: 'Boltz2 iPSAE' },
+            { id: 'canvas_iptm', xKey: 'AF3_iPTM', yKey: 'Boltz_iPTM', xLabel: 'AF3 iPTM', yLabel: 'Boltz2 iPTM' },
+            { id: 'canvas_boltz_check', xKey: 'Boltz_iPSAE', yKey: 'Boltz_iPTM', xLabel: 'Boltz2 iPSAE', yLabel: 'Boltz2 iPTM' },
+            { id: 'canvas_af3_check', xKey: 'AF3_iPSAE', yKey: 'AF3_iPTM', xLabel: 'AF3 iPSAE', yLabel: 'AF3 iPTM' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyFilters(); 
+            
+            setTimeout(() => {
+                plots.forEach(p => {
+                    p.el = document.getElementById(p.id);
+                    p.ctx = p.el.getContext('2d');
+                    setupInteraction(p);
+                });
+                requestAnimationFrame(renderLoop);
+            }, 100);
+        });
+
+        window.addEventListener('resize', () => requestAnimationFrame(renderLoop));
+
+        // --- FILTER LOGIC ---
+        const tierToggles = document.querySelectorAll('.tier-toggle');
+        const sourceToggles = document.querySelectorAll('.source-toggle');
+        tierToggles.forEach(t => t.addEventListener('change', applyFilters));
+        sourceToggles.forEach(t => t.addEventListener('change', applyFilters));
+        document.getElementById('sortSelect').addEventListener('change', applyFilters);
+        document.getElementById('tableSearch').addEventListener('input', applyFilters);
+
+        function applyFilters() {
+            const search = document.getElementById('tableSearch').value.toLowerCase();
+            const sortVal = document.getElementById('sortSelect').value;
+            const checkedTiers = Array.from(tierToggles).filter(t => t.checked).map(t => t.value);
+            const checkedSources = Array.from(sourceToggles).filter(t => t.checked).map(t => t.value);
+
+            data = RAW_DATA.filter(d => {
+                const matchesSearch = d.Design.toLowerCase().includes(search);
+                const matchesSource = checkedSources.includes(d.Source);
+                const matchesTier = checkedTiers.some(tier => d.Status.includes(tier));
+                
+                return matchesSearch && matchesSource && matchesTier;
+            });
+
+            if (sortVal !== 'default') {
+                let col = '';
+                if(sortVal === 'af3_ipsae') col = 'AF3_iPSAE';
+                if(sortVal === 'boltz_ipsae') col = 'Boltz_iPSAE';
+                if(sortVal === 'af3_iptm') col = 'AF3_iPTM';
+                data.sort((a, b) => (b[col] || 0) - (a[col] || 0));
+            }
+            
+            document.getElementById('totalCount').innerText = data.length;
+            renderTable();
+        }
+
+        // --- SOURCE COLOR MAPPING ---
+        function getSourceBadge(source) {
+            if (source === 'BindCraft') return 'bg-teal-500/20 text-teal-300 border-teal-500/50';
+            if (source === 'BoltzGen_Large') return 'bg-amber-500/20 text-amber-300 border-amber-500/50';
+            if (source === 'BoltzGen_VHH') return 'bg-sky-500/20 text-sky-300 border-sky-500/50';
+            if (source === 'BoltzGen_Miniprotein') return 'bg-rose-500/20 text-rose-300 border-rose-500/50';
+            return 'bg-slate-500/20 text-slate-300 border-slate-500/50';
+        }
+
+        // --- RENDER TABLE ---
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = data.map((d) => {
+                let statusColor = "text-slate-400";
+                if(d.Status.includes('Platinum')) statusColor = "text-emerald-400 font-bold";
+                else if(d.Status.includes('Gold')) statusColor = "text-blue-400";
+                else if(d.Status.includes('Silver')) statusColor = "text-purple-400";
+                else if(d.Status.includes('Bronze')) statusColor = "text-orange-400";
+                else if(d.Status.includes('Fail')) statusColor = "text-red-400";
+                
+                const originalIndex = RAW_DATA.indexOf(d);
+                const srcBadge = getSourceBadge(d.Source);
+
+                return `
+                    <tr class="hover:bg-slate-700/40 cursor-pointer transition-colors" onclick="selectDesign(${originalIndex})">
+                        <td class="px-6 py-3 whitespace-nowrap"><span class="${statusColor} text-[10px]">${d.Status.split('_')[1] || d.Status}</span></td>
+                        <td class="px-4 py-3"><span class="px-1.5 py-0.5 rounded text-[10px] border ${srcBadge}">${d.Source}</span></td>
+                        <td class="px-6 py-3 font-mono text-slate-200">${d.Design}</td>
+                        <td class="px-4 py-3 text-right font-mono text-blue-300">${(d.AF3_iPSAE || 0).toFixed(3)}</td>
+                        <td class="px-4 py-3 text-right font-mono text-purple-300">${(d.Boltz_iPSAE || 0).toFixed(3)}</td>
+                        <td class="px-4 py-3 text-right font-mono text-slate-400">${(d.AF3_iPTM || 0).toFixed(2)}</td>
+                        <td class="px-4 py-3 text-right font-mono text-slate-400">${(d.Boltz_iPTM || 0).toFixed(2)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- PLOTS ---
+        function renderLoop() {
+            plots.forEach(p => drawPlot(p));
+            requestAnimationFrame(renderLoop);
+        }
+
+        // Shape drawing helpers
+        function drawCircle(ctx, x, y, r) {
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2);
+        }
+        function drawTriangle(ctx, x, y, r) {
+            ctx.beginPath();
+            ctx.moveTo(x, y - r);
+            ctx.lineTo(x - r * 0.87, y + r * 0.5);
+            ctx.lineTo(x + r * 0.87, y + r * 0.5);
+            ctx.closePath();
+        }
+        function drawSquare(ctx, x, y, r) {
+            ctx.beginPath();
+            ctx.rect(x - r * 0.7, y - r * 0.7, r * 1.4, r * 1.4);
+        }
+        function drawDiamond(ctx, x, y, r) {
+            ctx.beginPath();
+            ctx.moveTo(x, y - r);
+            ctx.lineTo(x + r, y);
+            ctx.lineTo(x, y + r);
+            ctx.lineTo(x - r, y);
+            ctx.closePath();
+        }
+
+        function drawPlot(plot) {
+            if(!plot.ctx) return;
+            const ctx = plot.ctx;
+            const rect = plot.el.getBoundingClientRect();
+            if (plot.el.width !== rect.width || plot.el.height !== rect.height) {
+                plot.el.width = rect.width;
+                plot.el.height = rect.height;
+            }
+            
+            const w = plot.el.width;
+            const h = plot.el.height;
+            const pad = 70; 
+
+            // Clear
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            // Grid
+            ctx.strokeStyle = '#334155'; ctx.lineWidth = 1; ctx.beginPath();
+            for(let i=0; i<=5; i++) {
+                const val = (i/5);
+                const pos = pad + val * (w - 2*pad);
+                const yPos = h - pad - val * (h - 2*pad);
+                ctx.moveTo(pos, pad); ctx.lineTo(pos, h - pad); 
+                ctx.moveTo(pad, yPos); ctx.lineTo(w - pad, yPos); 
+                
+                ctx.fillStyle = '#64748b'; ctx.font = '12px "JetBrains Mono"';
+                ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+                ctx.fillText(val.toFixed(1), pos, h - pad + 8);
+                ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+                ctx.fillText(val.toFixed(1), pad - 12, yPos);
+            }
+            ctx.stroke();
+
+            // Diagonal
+            ctx.strokeStyle = '#475569';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(pad, h - pad);
+            ctx.lineTo(w - pad, pad);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Labels
+            ctx.fillStyle = '#cbd5e1'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText(plot.xLabel, w/2, h - 10);
+            ctx.save(); ctx.translate(20, h/2); ctx.rotate(-Math.PI/2);
+            ctx.fillText(plot.yLabel, 0, 0); ctx.restore();
+
+            // Points - use different shapes per source
+            data.forEach((d) => {
+                const xVal = d[plot.xKey] || 0;
+                const yVal = d[plot.yKey] || 0;
+                const x = pad + xVal * (w - 2*pad);
+                const y = h - pad - yVal * (h - 2*pad);
+                
+                const isSelected = (RAW_DATA.indexOf(d) === selectedIndex);
+                const isHovered = (RAW_DATA.indexOf(d) === hoveredIndex);
+
+                const radius = isSelected ? 8 : (isHovered ? 6 : 4);
+                
+                // Draw shape based on source
+                if (d.Source === 'BoltzGen_Large') {
+                    drawTriangle(ctx, x, y, radius);
+                } else if (d.Source === 'BoltzGen_VHH') {
+                    drawSquare(ctx, x, y, radius);
+                } else if (d.Source === 'BoltzGen_Miniprotein') {
+                    drawDiamond(ctx, x, y, radius);
+                } else {
+                    drawCircle(ctx, x, y, radius);
+                }
+                
+                // Color based on tier
+                let color = '#ef4444'; 
+                if(d.Status.includes('Platinum')) color = '#10b981';
+                else if(d.Status.includes('Gold')) color = '#3b82f6';
+                else if(d.Status.includes('Silver')) color = '#a855f7';
+                else if(d.Status.includes('Bronze')) color = '#f59e0b';
+
+                ctx.fillStyle = color;
+                
+                if (isSelected || isHovered) {
+                    ctx.shadowColor = 'white'; ctx.shadowBlur = 10; ctx.strokeStyle = 'white'; ctx.lineWidth = 2;
+                    ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
+                } else {
+                    ctx.globalAlpha = 0.8; ctx.fill(); ctx.globalAlpha = 1.0;
+                }
+            });
+        }
+
+        function setupInteraction(plot) {
+            const cvs = plot.el;
+            cvs.addEventListener('mousemove', e => {
+                const rect = cvs.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                
+                const w = cvs.width; const h = cvs.height; const pad = 70; 
+                const iw = w - 2*pad; const ih = h - 2*pad;
+
+                let closest = null; let minDist = 15;
+
+                data.forEach((d) => {
+                    const x = pad + (d[plot.xKey]||0) * iw;
+                    const y = h - pad - (d[plot.yKey]||0) * ih;
+                    const dist = Math.hypot(mx - x, my - y);
+                    if(dist < minDist) { 
+                        minDist = dist; 
+                        closest = RAW_DATA.indexOf(d); 
+                    }
+                });
+
+                if(closest !== hoveredIndex) {
+                    hoveredIndex = closest;
+                    cvs.style.cursor = closest !== null ? 'pointer' : 'default';
+                }
+            });
+            cvs.addEventListener('mouseleave', () => hoveredIndex = null);
+            cvs.addEventListener('click', () => {
+                if(hoveredIndex !== null) selectDesign(hoveredIndex);
+            });
+        }
+
+        function selectDesign(idx) {
+            selectedIndex = idx;
+            const d = RAW_DATA[idx];
+            document.getElementById('detailsPlaceholder').classList.add('hidden');
+            document.getElementById('detailsContent').classList.remove('hidden');
+            document.getElementById('detailsContent').classList.add('flex');
+            
+            document.getElementById('detailTitle').innerText = d.Design;
+            
+            const srcBadge = document.getElementById('detailSourceBadge');
+            srcBadge.innerText = d.Source;
+            srcBadge.className = `px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border ${getSourceBadge(d.Source)}`;
+            
+            const badge = document.getElementById('detailStatusBadge');
+            let bClass = "bg-red-500/20 text-red-300 border-red-500/50";
+            if(d.Status.includes('Platinum')) bClass = "bg-emerald-500/20 text-emerald-300 border-emerald-500/50";
+            else if(d.Status.includes('Gold')) bClass = "bg-blue-500/20 text-blue-300 border-blue-500/50";
+            else if(d.Status.includes('Silver')) bClass = "bg-purple-500/20 text-purple-300 border-purple-500/50";
+            else if(d.Status.includes('Bronze')) bClass = "bg-orange-500/20 text-orange-300 border-orange-500/50";
+            badge.className = `px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border ${bClass}`;
+            badge.innerText = d.Status.split('_')[1] || d.Status;
+
+            document.getElementById('val_af3_iptm').innerText = (d.AF3_iPTM || 0).toFixed(2);
+            document.getElementById('val_af3_ipsae').innerText = (d.AF3_iPSAE || 0).toFixed(3);
+            document.getElementById('val_boltz_iptm').innerText = (d.Boltz_iPTM || 0).toFixed(2);
+            document.getElementById('val_boltz_ipsae').innerText = (d.Boltz_iPSAE || 0).toFixed(3);
+            document.getElementById('detailSequence').innerText = d.sequence_clean || "N/A";
+        }
+    </script>
+</body>
+</html>
+    
