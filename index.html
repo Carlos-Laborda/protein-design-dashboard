@@ -95,11 +95,18 @@
       gap: 12px;
       align-items: center;
       padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
       background: rgba(15, 23, 42, 0.92);
       font-weight: 750;
+      cursor: pointer;
+      list-style: none;
     }
-    .guide-note { color: var(--muted); font-size: 12px; font-weight: 500; }
+    .guide-header::-webkit-details-marker { display: none; }
+    .guide-header::after { content: '+'; color: var(--blue); font-size: 20px; line-height: 1; flex: none; }
+    .guide-header:focus-visible { outline: 2px solid var(--blue); outline-offset: -3px; }
+    .scoring-guide[open] .guide-header { border-bottom: 1px solid var(--border); }
+    .scoring-guide[open] .guide-header::after { content: '−'; }
+    .scoring-guide:not([open]) .guide-note { display: none; }
+    .guide-note { margin-left: auto; color: var(--muted); font-size: 12px; font-weight: 500; }
     .guide-table { width: 100%; border-collapse: collapse; font-size: 12px; }
     .guide-table th {
       position: static;
@@ -582,11 +589,11 @@
       <span class="pill"><span class="dot red"></span> Red: weak / concern</span>
     </section>
 
-    <section class="scoring-guide">
-      <div class="guide-header">
+    <details class="scoring-guide">
+      <summary class="guide-header">
         <span>How to Read This Dashboard</span>
         <span class="guide-note">Hover any metric header for the exact green/yellow/red cutoffs.</span>
-      </div>
+      </summary>
       <table class="guide-table">
         <tbody>
           <tr>
@@ -611,7 +618,7 @@
           </tr>
         </tbody>
       </table>
-    </section>
+    </details>
 
     <section class="controls">
       <input id="searchInput" type="text" placeholder="Search design or result id..." style="min-width: 260px;">
